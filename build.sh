@@ -1,1 +1,1 @@
-sudo docker pull hello-world
+docker pull hello-world
