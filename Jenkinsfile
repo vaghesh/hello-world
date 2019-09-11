@@ -11,5 +11,10 @@ pipeline {
         sh './build.sh'
       }
     }
+    stage('Success') {
+      steps {
+        echo 'It is Successful'
+      }
+    }
   }
 }
