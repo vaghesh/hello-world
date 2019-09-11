@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    node {
-      label 'Docker-Jenkins-Slave'
-    }
-
-  }
+  agent any
   stages {
     stage('Clone') {
       steps {
