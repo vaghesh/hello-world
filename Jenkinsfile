@@ -8,8 +8,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh '''chmod a+x install.sh
-./install.sh'''
+        sh '''chmod a+x build.sh
+./build.sh'''
       }
     }
     stage('Success') {
