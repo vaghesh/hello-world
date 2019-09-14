@@ -73,5 +73,11 @@ pipeline {
         echo 'Success'
       }
     }
+    stage('Docker Registry - Integration') {
+      steps {
+        sh '''chmod a+x ./delivery/integration-registry.sh
+./delivery/integration-registry.sh'''
+      }
+    }
   }
 }
