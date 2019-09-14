@@ -1,0 +1,97 @@
+pipeline {
+  agent {label 'Docker-Jenkins-Slave'}
+  stages {
+    stage('Pull') {
+      steps {
+        script {
+            docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+                image = docker.image('integration/video-ingestion:2.0')
+                image.pull()
+            }
+        }
+      }
+    }
+    stage('Pull 3rd Party Components') {
+      steps {
+        sleep 10
+      }
+    }
+    stage('Infrastructure Setup') {
+      steps {
+        sleep 5
+      }
+    }
+    stage('Build') {
+      steps {
+        sleep 10
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sleep 10 
+      }
+    }
+    stage('Automatic Testing Suite - Functional') {
+      steps {
+        sleep 1
+      }
+    }
+    stage('Automatic Testing Suite - Load Testing') {
+      steps {
+        sleep 10
+      }
+    }
+    stage('Automatic Validation - GSG') {
+      steps {
+        sleep 2
+      }
+    }
+    stage('Automatic Validation - Tutorials') {
+      steps {
+        sleep 10
+      }
+    }    
+    stage('Automatic Validation - Reference Implementations') {
+      steps {
+        sleep 5
+      }
+    }
+    stage('Docker Registry - Staging') {
+      steps {
+        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/integration/video-ingestion:2.0 staging/video-ingestion:latest '''
+        script {
+          docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+            docker.image('staging/video-ingestion').push('2.0')
+          }
+        }
+      }
+    }
+    stage('Notifications') {
+      steps {
+        echo 'Notification Sent.'
+      }
+    }
+    stage('End') {
+      steps {
+        echo 'Successfully added to Staging'
+      }
+    }
+
+    stage('Docker Registry - Production') {
+      steps {
+        input 'Do you want to push this build to Production registry? (Click "Proceed" to continue) '
+        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/staging/video-ingestion:2.0 production/video-ingestion:latest '''
+        script {
+          docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+            docker.image('production/video-ingestion').push('2.0')
+          }
+        }
+      }
+    }
+    stage('Add Component to Recipe Builder') {
+      steps {
+          echo 'Component Added to Recipe Builder'
+      }
+    }
+  }
+}
