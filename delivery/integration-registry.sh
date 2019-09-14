@@ -1,1 +1,1 @@
-docker tag video-ingestion:1.0 integration/video-ingestion:1.0
+docker tag video-ingestion:latest integration/video-ingestion:latest
