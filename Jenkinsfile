@@ -65,8 +65,7 @@ pipeline {
     }
     stage('Notifications') {
       steps {
-        echo 'Success.'
-        mail(subject: 'Jenkins Auto Build Successful', body: 'This is a result for Jenkins Auto Build.', to: 'vaghesh.patel@intel.com')
+        echo 'Notification Sent. '
       }
     }
     stage('End') {
