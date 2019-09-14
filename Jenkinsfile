@@ -50,12 +50,14 @@ pipeline {
       parallel {
         stage('Developer') {
           steps {
-            sh './delivery/developer-registry.sh'
+            sh '''chmod a+x ./delivery/developer-registry.sh
+./delivery/developer-registry.sh'''
           }
         }
         stage('Integration') {
           steps {
-            sh './delivery/integration-registry.sh'
+            sh '''chmod a+x ./delivery/integration-registry.sh
+./delivery/integration-registry.sh'''
             input 'Finished using the web site? (Click "Proceed" to continue) '
           }
         }
