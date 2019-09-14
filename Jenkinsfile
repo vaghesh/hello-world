@@ -46,21 +46,10 @@ pipeline {
         sleep 3
       }
     }
-    stage('Docker Registry') {
-      parallel {
-        stage('Developer') {
-          steps {
-            sh '''chmod a+x ./delivery/developer-registry.sh
+    stage('Dockder Registry - Developer') {
+      steps {
+        sh '''chmod a+x ./delivery/developer-registry.sh
 ./delivery/developer-registry.sh'''
-          }
-        }
-        stage('Integration') {
-          steps {
-            sh '''chmod a+x ./delivery/integration-registry.sh
-./delivery/integration-registry.sh'''
-            input 'Finished using the web site? (Click "Proceed" to continue) '
-          }
-        }
       }
     }
     stage('Notifications') {
@@ -75,6 +64,7 @@ pipeline {
     }
     stage('Docker Registry - Integration') {
       steps {
+        input 'Do you want to push this build to Integration registry? (Click "Proceed" to continue) '
         sh '''chmod a+x ./delivery/integration-registry.sh
 ./delivery/integration-registry.sh'''
       }
