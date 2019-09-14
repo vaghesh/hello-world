@@ -1,0 +1,1 @@
+docker tag video-ingestion integration/video-ingestion
