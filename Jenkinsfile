@@ -6,15 +6,70 @@ pipeline {
         git 'https://github.com/vaghesh/hello-world'
       }
     }
+    stage('Infrastructure Setup') {
+      steps {
+        sleep 5
+      }
+    }
     stage('Build') {
       steps {
         sh '''chmod a+x build.sh
 ./build.sh'''
       }
     }
-    stage('Success') {
+    stage('Unit Testing') {
       steps {
-        echo 'It is Successful'
+        sh 'ls'
+      }
+    }
+    stage('Static Code Analysis') {
+      parallel {
+        stage('Checkmarx') {
+          steps {
+            sleep 10
+          }
+        }
+        stage('Klockworks') {
+          steps {
+            sleep 2
+          }
+        }
+      }
+    }
+    stage('Protex Scan') {
+      steps {
+        sleep 2
+      }
+    }
+    stage('Intel Docker Push') {
+      steps {
+        sleep 3
+      }
+    }
+    stage('Docker Registry') {
+      parallel {
+        stage('Developer') {
+          steps {
+            sh './delivery/developer-registry.sh'
+          }
+        }
+        stage('Integration') {
+          steps {
+            sh './delivery/integration-registry.sh'
+            input 'Finished using the web site? (Click "Proceed" to continue) '
+          }
+        }
+      }
+    }
+    stage('Notifications') {
+      steps {
+        echo 'Success.'
+        mail(subject: 'Jenkins Auto Build Successful', body: 'This is a result for Jenkins Auto Build.')
+      }
+    }
+    stage('End') {
+      steps {
+        echo 'Success'
       }
     }
   }
