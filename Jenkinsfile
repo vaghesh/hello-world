@@ -69,5 +69,9 @@ pipeline {
 ./delivery/integration-registry.sh'''
       }
     }
+    stage 'Docker push'
+    docker.withRegistry('058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+    docker.image('node-web-server').push('latest')
+  }
   }
 }
