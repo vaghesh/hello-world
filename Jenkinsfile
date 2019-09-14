@@ -67,6 +67,12 @@ pipeline {
         input 'Do you want to push this build to Integration registry? (Click "Proceed" to continue) '
         sh '''chmod a+x ./delivery/integration-registry.sh
 ./delivery/integration-registry.sh'''
+        script {
+          docker.withRegistry('058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+            docker.image('node-web-server').push('latest')
+          }
+        }
+
       }
     }
   }
