@@ -46,10 +46,16 @@ pipeline {
         sleep 3
       }
     }
-    stage('Dockder Registry - Developer') {
+    stage('Docker Registry - Developer') {
       steps {
         sh '''chmod a+x ./delivery/developer-registry.sh
 ./delivery/developer-registry.sh'''
+        script {
+          docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+            docker.image('developer/video-ingestion').push()
+          }
+        }
+
       }
     }
     stage('Notifications') {
@@ -67,6 +73,12 @@ pipeline {
         input 'Do you want to push this build to Integration registry? (Click "Proceed" to continue) '
         sh '''chmod a+x ./delivery/integration-registry.sh
 ./delivery/integration-registry.sh'''
+        script {
+          docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
+            docker.image('integration/video-ingestion').push()
+          }
+        }
+
       }
     }
   }
