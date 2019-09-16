@@ -5,7 +5,7 @@ pipeline {
       steps {
         script {
             docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
-                image = docker.image('integration/video-ingestion:2.0')
+                image = docker.image('integration/video-ingestion:3.0')
                 image.pull()
             }
         }
@@ -58,10 +58,10 @@ pipeline {
     }
     stage('Docker Registry - Staging') {
       steps {
-        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/integration/video-ingestion:2.0 staging/video-ingestion:latest '''
+        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/integration/video-ingestion:3.0 staging/video-ingestion:latest '''
         script {
           docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
-            docker.image('staging/video-ingestion').push('2.0')
+            docker.image('staging/video-ingestion').push('3.0')
           }
         }
       }
@@ -80,10 +80,10 @@ pipeline {
     stage('Docker Registry - Production') {
       steps {
         input 'Do you want to push this build to Production registry? (Click "Proceed" to continue) '
-        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/staging/video-ingestion:2.0 production/video-ingestion:latest '''
+        sh '''sudo docker tag 058406123027.dkr.ecr.us-west-2.amazonaws.com/staging/video-ingestion:3.0 production/video-ingestion:latest '''
         script {
           docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
-            docker.image('production/video-ingestion').push('2.0')
+            docker.image('production/video-ingestion').push('3.0')
           }
         }
       }
