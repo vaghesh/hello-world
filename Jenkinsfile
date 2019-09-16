@@ -52,7 +52,7 @@ pipeline {
 ./delivery/developer-registry.sh'''
         script {
           docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
-            docker.image('developer/video-ingestion').push('2.0')
+            docker.image('developer/video-ingestion').push('3.0')
           }
         }
 
@@ -75,7 +75,7 @@ pipeline {
 ./delivery/integration-registry.sh'''
         script {
           docker.withRegistry('https://058406123027.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:demo-ecr-credentials') {
-            docker.image('integration/video-ingestion').push('2.0')
+            docker.image('integration/video-ingestion').push('3.0')
           }
         }
 
