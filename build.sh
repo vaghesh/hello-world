@@ -1,2 +1,2 @@
-# Build Docker Image for Node Server for Video Ingestion
+# Build Docker Image for Node Server 
 sudo docker build . -t video-ingestion 
